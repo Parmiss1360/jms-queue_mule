@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:msmq="http://www.mulesoft.org/schema/mule/msmq" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/msmq http://www.mulesoft.org/schema/mule/msmq/current/mule-msmq.xsd">
+	<msmq:msmq-receiver-config name="MSMQ_Msmq_receiver_config" doc:name="MSMQ Msmq receiver config" doc:id="5856a8e0-5859-43d4-b525-0d5a9137e380" messageCount="3" pollingFrequency="100" messageFormatter="None" messageDelivery="AtLeastOnce">
+		<msmq:msmq-connection serviceAddress="localhost:9333" accessToken="VKzxPzwXafZPemENQc+CaLuqDQE=" queueName=".\private$\msmq-demo" ignoreSSLWarnings="true"/>
+	</msmq:msmq-receiver-config>
+	<flow name="SubscripeMSMQFlow" doc:id="eb05f392-0aba-4c44-84d5-b23a13066525" >
+		<msmq:msmq doc:name="Msmq" doc:id="3ca731a2-61ba-411c-8f64-1a37b5f6865f" config-ref="MSMQ_Msmq_receiver_config"/>
+		<logger level="INFO" doc:name="Logger" doc:id="eed39c8c-f477-483e-8cdf-5715980b0560" message="#[payload]"/>
+	</flow>
+</mule>
