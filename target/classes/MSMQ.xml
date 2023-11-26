@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:msmq="http://www.mulesoft.org/schema/mule/msmq" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/msmq http://www.mulesoft.org/schema/mule/msmq/current/mule-msmq.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="615d8018-d7fa-4f8f-a85e-a62fc3fdf240" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<msmq:msmq-sender-config name="MSMQ_Msmq_sender_config" doc:name="MSMQ Msmq sender config" doc:id="edad911c-5870-4800-9f79-7fe4f65ac5f0" >
+		<msmq:msmq-connection serviceAddress="localhost:9333" accessToken="VKzxPzwXafZPemENQc+CaLuqDQE=" queueName=".\private$\msmq-demo" ignoreSSLWarnings="true" />
+	</msmq:msmq-sender-config>
+	<flow name="MSMQFlow" doc:id="0246ff9d-b5df-448b-8486-2e131046cbf8" >
+		<scheduler doc:name="Scheduler" doc:id="2810b244-712b-46db-96f8-2163dde0f5e5" >
+			<scheduling-strategy >
+				<fixed-frequency frequency="1" timeUnit="MINUTES" />
+			</scheduling-strategy>
+		</scheduler>
+		<logger level="INFO" doc:name="Start logg" doc:id="61398277-8fe1-4fde-9e7c-04761e94a664" message="publish profile" />
+		<db:select doc:name="Select" doc:id="427743f8-669d-4b9c-9b76-6745a14c94a0" config-ref="Database_Config" >
+			<db:sql ><![CDATA[
+SELECT  [Name]
+      ,[Phone]
+      ,[Email]
+      ,[Skill]
+  FROM [Emp_profile]]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="4b5f90a2-25ad-4b80-a813-1cc92284726d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( emp , indexOfemp ) -> {
+	EMP_NAME: emp.Name default "",
+	EMP_PHONE: emp.Phone default "",
+	EMP_MAIL: emp.Email default "",
+	EMP_SKILL: emp.Skill default ""
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<msmq:send doc:name="Send" doc:id="7ab33769-8e43-4402-b9f3-a96b4cb273b5" config-ref="MSMQ_Msmq_sender_config" queueName="msmq-demo" messageFormatter="None"/>
+	</flow>
+</mule>

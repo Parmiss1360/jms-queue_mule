@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="Json" format="json">
+      <types:shape format="weave" example="examples/Employee-1.json"><![CDATA[%dw 2.0
+
+type Json = Array<{|  EMP_NAME: String,   EMP_PHONE: String,   EMP_MAIL: String,   EMP_SKILL: String|}> {"example": "[{\\\"EMP_NAME\\\":\\\"2wrew\\\",\\\"EMP_PHONE\\\":\\\"2rqewr\\\",\\\"EMP_MAIL\\\":\\\"5\\\",\\\"EMP_SKILL\\\":\\\"MULE\\\"},{\\\"EMP_NAME\\\":\\\"2wrew\\\",\\\"EMP_PHONE\\\":\\\"2rqewr\\\",\\\"EMP_MAIL\\\":\\\"5\\\",\\\"EMP_SKILL\\\":\\\"MULE\\\"},{\\\"EMP_NAME\\\":\\\"2wrew\\\",\\\"EMP_PHONE\\\":\\\"2rqewr\\\",\\\"EMP_MAIL\\\":\\\"5\\\",\\\"EMP_SKILL\\\":\\\"MULE\\\"}]"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#5f14027b-77c2-4d41-b22a-25196473d52c">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="Json"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

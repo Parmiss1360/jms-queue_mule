@@ -1,0 +1,33 @@
+{
+  "configs": [
+    "MSMQ.xml",
+    "Subscribejms.xml",
+    "jms_queue.xml",
+    "SubscripeMSMQ.xml"
+  ],
+  "secureProperties": [],
+  "redeploymentEnabled": true,
+  "name": "com.mycompany:jms_queue:1.0.0-SNAPSHOT",
+  "minMuleVersion": "4.5.0",
+  "requiredProduct": "MULE_EE",
+  "classLoaderModelLoaderDescriptor": {
+    "id": "mule",
+    "attributes": {
+      "exportedPackages": [],
+      "exportedResources": [
+        "application-types.xml",
+        "examples/Employee-1.json",
+        "examples/Employee.json",
+        "jms_queue.xml",
+        "log4j2.xml",
+        "MSMQ.xml",
+        "Subscribejms.xml",
+        "SubscripeMSMQ.xml"
+      ]
+    }
+  },
+  "bundleDescriptorLoader": {
+    "id": "mule",
+    "attributes": {}
+  }
+}
